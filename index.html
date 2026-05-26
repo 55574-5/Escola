@@ -286,7 +286,8 @@ async function enviarReunioes() {
   function prog(msg) { step++; const p = Math.round((step/total)*100); progBar.style.display='block'; progTexto.style.display='block'; progInner.style.width=p+'%'; progTexto.textContent=msg; }
   try {
     prog('Salvando registro...');
-    await fetch(SCRIPT_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ aba:'Reunioes', data:v('r-data'), horario_inicio:v('r-inicio'), horario_fim:v('r-fim'), tipo, aluno:v('r-aluno'), turma_aluno:v('r-turma-aluno'), pauta:v('r-pauta'), participantes:v('r-participantes'), encaminhamentos:v('r-encaminhamentos'), fotos:[], responsavel }) });
+    await fetch(SCRIPT_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ aba:'Reunioes', data:v('r-data'), horario_inicio:v('r-inicio'), horario_fim:v('r-fim'), tipo, aluno:v('r-aluno'), turma_aluno:v('r-turma-aluno'), pauta:v('r-pauta'), participantes:v('r-participantes'), encaminhamentos:v('r-encaminhamentos'), responsavel })
+});
     for (let i = 0; i < fotosReuniaoBase64.length; i++) {
       prog('Enviando foto ' + (i+1) + ' de ' + fotosReuniaoBase64.length + '...');
       await fetch(SCRIPT_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ aba:'FotosReunioes', data:v('r-data'), tipo, responsavel, fotos:[fotosReuniaoBase64[i]] }) });
