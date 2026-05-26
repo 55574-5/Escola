@@ -392,7 +392,7 @@ function processarFotos(input, chave) {
         const canvas =
           document.createElement('canvas');
 
-        const MAX_WIDTH = 1000;
+        const MAX_WIDTH = 500;
 
         let width = img.width;
         let height = img.height;
@@ -422,7 +422,7 @@ function processarFotos(input, chave) {
         const compressedBase64 =
           canvas.toDataURL(
             'image/jpeg',
-            0.6
+            0.3
           );
 
         fotosReuniaoBase64.push({
