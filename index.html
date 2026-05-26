@@ -50,6 +50,61 @@
 
   .aba { display: none; }
   .aba.visivel { display: block; }
+
+  /* ── Alunos dinâmicos (Brigas) ── */
+  .alunos-label {
+    font-size: 13px; color: #555; font-weight: 500; margin-bottom: 8px; display: block;
+  }
+  .aluno-card {
+    border: 1px solid #e0e0e0; border-radius: 8px; padding: 14px 14px 10px;
+    margin-bottom: 10px; background: #fafafa; position: relative;
+  }
+  .aluno-card .aluno-header {
+    font-size: 12px; font-weight: 600; color: #1a73e8; margin-bottom: 10px; letter-spacing: 0.3px;
+  }
+  .btn-remover-aluno {
+    position: absolute; top: 10px; right: 12px;
+    background: none; border: none; cursor: pointer; color: #c0392b;
+    font-size: 18px; line-height: 1; padding: 0;
+  }
+  .btn-remover-aluno:hover { color: #922b21; }
+  .btn-add-aluno {
+    display: flex; align-items: center; gap: 6px;
+    background: none; border: 1.5px dashed #1a73e8; color: #1a73e8;
+    border-radius: 6px; padding: 8px 14px; font-size: 13px; font-weight: 600;
+    cursor: pointer; width: 100%; justify-content: center; margin-bottom: 16px;
+    transition: background 0.15s;
+  }
+  .btn-add-aluno:hover { background: #e8f0fe; }
+
+  /* ── Upload de foto (Reuniões) ── */
+  .upload-area {
+    border: 2px dashed #ccc; border-radius: 8px; padding: 24px 16px;
+    text-align: center; cursor: pointer; transition: all 0.2s;
+    background: #fafafa; position: relative;
+  }
+  .upload-area:hover, .upload-area.drag-over {
+    border-color: #1a73e8; background: #e8f0fe;
+  }
+  .upload-area input[type=file] {
+    position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+  }
+  .upload-area .upload-icon { font-size: 32px; margin-bottom: 6px; }
+  .upload-area .upload-texto { font-size: 13px; color: #666; }
+  .upload-area .upload-sub { font-size: 11px; color: #999; margin-top: 4px; }
+  .fotos-preview { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .foto-thumb {
+    position: relative; width: 80px; height: 80px; border-radius: 6px;
+    overflow: hidden; border: 1px solid #ddd;
+  }
+  .foto-thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .foto-thumb .btn-del-foto {
+    position: absolute; top: 2px; right: 2px; background: rgba(0,0,0,0.6);
+    color: white; border: none; border-radius: 50%; width: 18px; height: 18px;
+    font-size: 11px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    line-height: 1;
+  }
+  .upload-count { font-size: 12px; color: #1a73e8; margin-top: 6px; font-weight: 500; }
 </style>
 </head>
 <body>
@@ -80,14 +135,16 @@
             <select id="b-turno"><option value="">Selecione</option><option>Manhã</option><option>Tarde</option><option>Integral</option></select>
           </div>
         </div>
-        <div class="linha-2">
-          <div class="campo"><label>Aluno 1</label><input type="text" id="b-aluno1" placeholder="Nome completo"></div>
-          <div class="campo"><label>Turma</label><input type="text" id="b-turma1" placeholder="Ex: 5º A"></div>
+
+        <!-- Alunos dinâmicos -->
+        <div class="campo">
+          <span class="alunos-label">Alunos envolvidos <span style="color:#c0392b">*</span></span>
+          <div id="lista-alunos"></div>
+          <button type="button" class="btn-add-aluno" onclick="adicionarAluno()">
+            + Adicionar aluno
+          </button>
         </div>
-        <div class="linha-2">
-          <div class="campo"><label>Aluno 2</label><input type="text" id="b-aluno2" placeholder="Nome completo"></div>
-          <div class="campo"><label>Turma</label><input type="text" id="b-turma2" placeholder="Ex: 4º B"></div>
-        </div>
+
         <div class="campo"><label>Local da briga</label>
           <select id="b-local"><option value="">Selecione</option><option>Sala de aula</option><option>Pátio / Recreio</option><option>Corredor</option><option>Banheiro</option><option>Cantina</option><option>Portão / Entrada</option><option>Outro</option></select>
         </div>
@@ -101,7 +158,7 @@
           </div>
         </div>
         <div class="campo"><label>Responsável pelo registro</label><input type="text" id="b-responsavel" placeholder="Nome do professor ou funcionário"></div>
-        <button class="btn-enviar" onclick="enviar('Brigas', {aba:'Brigas', data: v('b-data'), hora: v('b-hora'), turno: v('b-turno'), aluno1: v('b-aluno1'), turma1: v('b-turma1'), aluno2: v('b-aluno2'), turma2: v('b-turma2'), local: v('b-local'), descricao: v('b-descricao'), pais_comunicados: v('b-pais'), encaminhamento: v('b-encaminhamento'), responsavel: v('b-responsavel')}, ['b-aluno1','b-responsavel'])">Salvar registro</button>
+        <button class="btn-enviar" onclick="enviarBrigas()">Salvar registro</button>
       </div>
       <div class="sucesso" id="suc-brigas">
         <div class="icone">✅</div>
@@ -162,11 +219,33 @@
         <div class="campo"><label>Tipo de reunião</label>
           <select id="r-tipo"><option value="">Selecione</option><option>Reunião de pais</option><option>Conselho de classe</option><option>Reunião pedagógica</option><option>Reunião com família de aluno</option><option>Formação de professores</option><option>Outro</option></select>
         </div>
+
+        <!-- Aluno da reunião -->
+        <div class="linha-2">
+          <div class="campo"><label>Nome do aluno (se aplicável)</label><input type="text" id="r-aluno" placeholder="Nome completo do aluno"></div>
+          <div class="campo"><label>Turma / Série</label><input type="text" id="r-turma-aluno" placeholder="Ex: 4º A"></div>
+        </div>
+
         <div class="campo"><label>Pauta / Assunto</label><textarea id="r-pauta" placeholder="Descreva os temas discutidos..."></textarea></div>
         <div class="campo"><label>Participantes</label><textarea id="r-participantes" placeholder="Liste os presentes..." style="min-height:60px;"></textarea></div>
         <div class="campo"><label>Encaminhamentos / Decisões</label><textarea id="r-encaminhamentos" placeholder="O que foi decidido ou encaminhado..."></textarea></div>
+
+        <!-- Upload de foto da ata assinada -->
+        <div class="campo">
+          <label>Foto do registro assinado pelos participantes</label>
+          <div class="upload-area" id="upload-area-reuniao"
+               ondragover="dragOver(event,'reuniao')" ondragleave="dragLeave('reuniao')" ondrop="dropFoto(event,'reuniao')">
+            <input type="file" id="r-fotos" accept="image/*" multiple onchange="processarFotos(this,'reuniao')">
+            <div class="upload-icon">📷</div>
+            <div class="upload-texto">Clique ou arraste as fotos aqui</div>
+            <div class="upload-sub">JPG, PNG ou HEIC • até 5 imagens</div>
+          </div>
+          <div class="fotos-preview" id="preview-reuniao"></div>
+          <div class="upload-count" id="count-reuniao"></div>
+        </div>
+
         <div class="campo"><label>Responsável pelo registro</label><input type="text" id="r-responsavel" placeholder="Nome do professor ou funcionário"></div>
-        <button class="btn-enviar" onclick="enviar('Reunioes', {aba:'Reunioes', data: v('r-data'), horario_inicio: v('r-inicio'), horario_fim: v('r-fim'), tipo: v('r-tipo'), pauta: v('r-pauta'), participantes: v('r-participantes'), encaminhamentos: v('r-encaminhamentos'), responsavel: v('r-responsavel')}, ['r-tipo','r-responsavel'])">Salvar registro</button>
+        <button class="btn-enviar" onclick="enviarReunioes()">Salvar registro</button>
       </div>
       <div class="sucesso" id="suc-reunioes">
         <div class="icone">✅</div>
@@ -233,8 +312,209 @@ const hoje = new Date().toISOString().split('T')[0];
   if (el) el.value = hoje;
 });
 
-trocarAba('ocorrencias');
+// ── Estado dos alunos dinâmicos (Brigas) ──
+let alunosBrigaCount = 0;
 
+function adicionarAluno() {
+  alunosBrigaCount++;
+  const idx = alunosBrigaCount;
+  const lista = document.getElementById('lista-alunos');
+  const card = document.createElement('div');
+  card.className = 'aluno-card';
+  card.id = 'aluno-card-' + idx;
+  card.innerHTML = `
+    <div class="aluno-header">Aluno ${idx}</div>
+    <button type="button" class="btn-remover-aluno" onclick="removerAluno(${idx})" title="Remover">✕</button>
+    <div class="linha-2">
+      <div class="campo" style="margin-bottom:0">
+        <label>Nome completo</label>
+        <input type="text" id="b-aluno-nome-${idx}" placeholder="Nome do aluno">
+      </div>
+      <div class="campo" style="margin-bottom:0">
+        <label>Turma</label>
+        <input type="text" id="b-aluno-turma-${idx}" placeholder="Ex: 5º A">
+      </div>
+    </div>
+  `;
+  lista.appendChild(card);
+  atualizarNumeracaoAlunos();
+}
+
+function removerAluno(idx) {
+  const card = document.getElementById('aluno-card-' + idx);
+  if (card) card.remove();
+  atualizarNumeracaoAlunos();
+}
+
+function atualizarNumeracaoAlunos() {
+  const cards = document.querySelectorAll('#lista-alunos .aluno-card');
+  cards.forEach((c, i) => {
+    const header = c.querySelector('.aluno-header');
+    if (header) header.textContent = 'Aluno ' + (i + 1);
+  });
+}
+
+function coletarAlunosBriga() {
+  const cards = document.querySelectorAll('#lista-alunos .aluno-card');
+  const alunos = [];
+  cards.forEach(card => {
+    const idCard = card.id.replace('aluno-card-', '');
+    const nome = document.getElementById('b-aluno-nome-' + idCard)?.value.trim() || '';
+    const turma = document.getElementById('b-aluno-turma-' + idCard)?.value.trim() || '';
+    alunos.push({ nome, turma });
+  });
+  return alunos;
+}
+
+// ── Fotos (Reuniões) ──
+let fotosReuniaoBase64 = [];
+
+function processarFotos(input, chave) {
+  const files = Array.from(input.files);
+  const MAX = 5;
+  files.forEach(file => {
+    if (fotosReuniaoBase64.length >= MAX) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      fotosReuniaoBase64.push({ nome: file.name, base64: e.target.result });
+      renderizarPreview();
+    };
+    reader.readAsDataURL(file);
+  });
+  input.value = '';
+}
+
+function renderizarPreview() {
+  const container = document.getElementById('preview-reuniao');
+  const count = document.getElementById('count-reuniao');
+  container.innerHTML = '';
+  fotosReuniaoBase64.forEach((foto, i) => {
+    const thumb = document.createElement('div');
+    thumb.className = 'foto-thumb';
+    thumb.innerHTML = `
+      <img src="${foto.base64}" alt="Foto ${i+1}">
+      <button class="btn-del-foto" onclick="removerFoto(${i})">✕</button>
+    `;
+    container.appendChild(thumb);
+  });
+  count.textContent = fotosReuniaoBase64.length > 0
+    ? `${fotosReuniaoBase64.length} foto(s) anexada(s)`
+    : '';
+}
+
+function removerFoto(idx) {
+  fotosReuniaoBase64.splice(idx, 1);
+  renderizarPreview();
+}
+
+function dragOver(e, chave) {
+  e.preventDefault();
+  document.getElementById('upload-area-' + chave).classList.add('drag-over');
+}
+function dragLeave(chave) {
+  document.getElementById('upload-area-' + chave).classList.remove('drag-over');
+}
+function dropFoto(e, chave) {
+  e.preventDefault();
+  dragLeave(chave);
+  const fakeInput = { files: e.dataTransfer.files, value: '' };
+  processarFotos(fakeInput, chave);
+}
+
+// ── Envio específico Brigas ──
+function enviarBrigas() {
+  const responsavel = v('b-responsavel');
+  if (!responsavel) {
+    alert('Preencha o campo Responsável pelo registro.');
+    document.getElementById('b-responsavel').focus();
+    return;
+  }
+  const alunos = coletarAlunosBriga();
+  if (alunos.length === 0) {
+    alert('Adicione ao menos um aluno envolvido na briga.');
+    return;
+  }
+  const semNome = alunos.find(a => !a.nome);
+  if (semNome) {
+    alert('Preencha o nome de todos os alunos adicionados.');
+    return;
+  }
+
+  const dados = {
+    aba: 'Brigas',
+    data: v('b-data'), hora: v('b-hora'), turno: v('b-turno'),
+    alunos: alunos,
+    local: v('b-local'), descricao: v('b-descricao'),
+    pais_comunicados: v('b-pais'), encaminhamento: v('b-encaminhamento'),
+    responsavel
+  };
+
+  const btn = document.querySelector('#aba-brigas .btn-enviar');
+  btn.disabled = true; btn.textContent = 'Salvando...';
+
+  fetch(SCRIPT_URL, {
+    method: 'POST', mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(dados)
+  })
+  .then(() => {
+    const protocolo = 'OC-' + Date.now().toString().slice(-6);
+    const nomes = alunos.map(a => a.nome).filter(Boolean).join(', ');
+    document.getElementById('info-brigas').textContent = nomes;
+    document.getElementById('prot-brigas').textContent = 'Protocolo: ' + protocolo;
+    document.getElementById('form-brigas').style.display = 'none';
+    document.getElementById('suc-brigas').style.display = 'block';
+  })
+  .catch(() => {
+    alert('Erro ao salvar. Verifique sua conexão e tente novamente.');
+    btn.disabled = false; btn.textContent = 'Salvar registro';
+  });
+}
+
+// ── Envio específico Reuniões ──
+function enviarReunioes() {
+  const tipo = v('r-tipo');
+  const responsavel = v('r-responsavel');
+  if (!tipo) { alert('Selecione o tipo de reunião.'); return; }
+  if (!responsavel) {
+    alert('Preencha o campo Responsável pelo registro.');
+    document.getElementById('r-responsavel').focus();
+    return;
+  }
+
+  const dados = {
+    aba: 'Reunioes',
+    data: v('r-data'), horario_inicio: v('r-inicio'), horario_fim: v('r-fim'),
+    tipo, aluno: v('r-aluno'), turma_aluno: v('r-turma-aluno'),
+    pauta: v('r-pauta'), participantes: v('r-participantes'),
+    encaminhamentos: v('r-encaminhamentos'),
+    fotos_count: fotosReuniaoBase64.length,
+    fotos: fotosReuniaoBase64.map(f => ({ nome: f.nome, base64: f.base64 })),
+    responsavel
+  };
+
+  const btn = document.querySelector('#aba-reunioes .btn-enviar');
+  btn.disabled = true; btn.textContent = 'Salvando...';
+
+  fetch(SCRIPT_URL, {
+    method: 'POST', mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(dados)
+  })
+  .then(() => {
+    const protocolo = 'OC-' + Date.now().toString().slice(-6);
+    document.getElementById('info-reunioes').textContent = tipo;
+    document.getElementById('prot-reunioes').textContent = 'Protocolo: ' + protocolo;
+    document.getElementById('form-reunioes').style.display = 'none';
+    document.getElementById('suc-reunioes').style.display = 'block';
+  })
+  .catch(() => {
+    alert('Erro ao salvar. Verifique sua conexão e tente novamente.');
+    btn.disabled = false; btn.textContent = 'Salvar registro';
+  });
+}
+
+// ── Genérico ──
 function v(id) {
   const el = document.getElementById(id);
   return el ? el.value : '';
@@ -257,20 +537,17 @@ function enviar(id, dados, obrigatorios) {
       return;
     }
   }
-
-  const btn = document.querySelector('#aba-' + id.toLowerCase() + ' .btn-enviar') ||
-              document.querySelector('#aba-busca .btn-enviar');
+  const abas = { Brigas: 'brigas', BuscaAtiva: 'busca', Reunioes: 'reunioes', Ocorrencias: 'ocorrencias' };
+  const slug = abas[id] || id.toLowerCase();
+  const btn = document.querySelector('#aba-' + slug + ' .btn-enviar');
   if (btn) { btn.disabled = true; btn.textContent = 'Salvando...'; }
 
   fetch(SCRIPT_URL, {
-    method: 'POST',
-    mode: 'no-cors',
+    method: 'POST', mode: 'no-cors',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(dados)
   })
   .then(() => {
-    const abas = { Brigas: 'brigas', BuscaAtiva: 'busca', Reunioes: 'reunioes', Ocorrencias: 'ocorrencias' };
-    const slug = abas[id] || id.toLowerCase();
     const protocolo = 'OC-' + Date.now().toString().slice(-6);
     const nomeAluno = dados.aluno || dados.aluno1 || dados.tipo || '';
     document.getElementById('info-' + slug).textContent = nomeAluno;
@@ -290,9 +567,25 @@ function novoRegistro(aba) {
   document.querySelectorAll('#aba-' + aba + ' input[type=text], #aba-' + aba + ' textarea, #aba-' + aba + ' input[type=number]').forEach(el => el.value = '');
   document.querySelectorAll('#aba-' + aba + ' select').forEach(el => el.value = '');
   document.querySelectorAll('#aba-' + aba + ' input[type=date]').forEach(el => el.value = hoje);
-  document.querySelector('#aba-' + aba + ' .btn-enviar').disabled = false;
-  document.querySelector('#aba-' + aba + ' .btn-enviar').textContent = 'Salvar registro';
+  const btn = document.querySelector('#aba-' + aba + ' .btn-enviar');
+  if (btn) { btn.disabled = false; btn.textContent = 'Salvar registro'; }
+
+  // Reset alunos briga
+  if (aba === 'brigas') {
+    document.getElementById('lista-alunos').innerHTML = '';
+    alunosBrigaCount = 0;
+  }
+  // Reset fotos reunião
+  if (aba === 'reunioes') {
+    fotosReuniaoBase64 = [];
+    renderizarPreview();
+  }
 }
+
+// Inicializa com 2 alunos padrão na aba brigas
+trocarAba('ocorrencias');
+adicionarAluno();
+adicionarAluno();
 </script>
 </body>
 </html>
