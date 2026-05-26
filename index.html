@@ -7,120 +7,67 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: Arial, sans-serif; background: #f4f4f4; color: #333; }
-
   .topo { background: #1a73e8; color: white; padding: 20px 24px; }
   .topo h1 { font-size: 18px; font-weight: 600; }
   .topo p { font-size: 13px; opacity: 0.85; margin-top: 4px; }
-
   .menu { display: flex; gap: 8px; padding: 16px 24px; background: white; border-bottom: 1px solid #ddd; flex-wrap: wrap; }
   .menu button { padding: 8px 18px; border: 1.5px solid #1a73e8; border-radius: 20px; background: white; color: #1a73e8; font-size: 13px; cursor: pointer; font-weight: 500; transition: all 0.15s; }
   .menu button:hover { background: #e8f0fe; }
   .menu button.ativo { background: #1a73e8; color: white; }
-
   .container { max-width: 680px; margin: 24px auto; padding: 0 16px; }
-
   .form-card { background: white; border-radius: 8px; border: 1px solid #ddd; padding: 24px; }
   .form-titulo { font-size: 16px; font-weight: 600; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px solid #1a73e8; color: #1a73e8; }
-
   .campo { margin-bottom: 16px; }
   .campo label { display: block; font-size: 13px; color: #555; margin-bottom: 5px; font-weight: 500; }
-  .campo input, .campo select, .campo textarea {
-    width: 100%; padding: 9px 12px; border: 1px solid #ccc; border-radius: 6px;
-    font-size: 14px; font-family: Arial, sans-serif; color: #333;
-    transition: border-color 0.15s;
-  }
-  .campo input:focus, .campo select:focus, .campo textarea:focus {
-    outline: none; border-color: #1a73e8;
-  }
+  .campo input, .campo select, .campo textarea { width: 100%; padding: 9px 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; font-family: Arial, sans-serif; color: #333; transition: border-color 0.15s; }
+  .campo input:focus, .campo select:focus, .campo textarea:focus { outline: none; border-color: #1a73e8; }
   .campo textarea { resize: vertical; min-height: 80px; }
-
   .linha-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
   .linha-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
-
   .btn-enviar { width: 100%; padding: 11px; background: #1a73e8; color: white; border: none; border-radius: 6px; font-size: 15px; font-weight: 600; cursor: pointer; margin-top: 8px; transition: background 0.15s; }
   .btn-enviar:hover { background: #1558b0; }
   .btn-enviar:disabled { background: #aaa; cursor: not-allowed; }
-
   .sucesso { display: none; text-align: center; padding: 32px 16px; }
   .sucesso .icone { font-size: 48px; margin-bottom: 12px; }
   .sucesso h2 { font-size: 18px; color: #1a73e8; margin-bottom: 6px; }
   .sucesso p { font-size: 13px; color: #666; }
   .sucesso .protocolo { font-size: 12px; color: #999; margin-top: 10px; }
   .btn-novo { margin-top: 16px; padding: 9px 24px; background: white; border: 1.5px solid #1a73e8; color: #1a73e8; border-radius: 6px; font-size: 14px; cursor: pointer; font-weight: 500; }
-
   .aba { display: none; }
   .aba.visivel { display: block; }
-
-  /* ── Alunos dinâmicos (Brigas) ── */
-  .alunos-label {
-    font-size: 13px; color: #555; font-weight: 500; margin-bottom: 8px; display: block;
-  }
-  .aluno-card {
-    border: 1px solid #e0e0e0; border-radius: 8px; padding: 14px 14px 10px;
-    margin-bottom: 10px; background: #fafafa; position: relative;
-  }
-  .aluno-card .aluno-header {
-    font-size: 12px; font-weight: 600; color: #1a73e8; margin-bottom: 10px; letter-spacing: 0.3px;
-  }
-  .btn-remover-aluno {
-    position: absolute; top: 10px; right: 12px;
-    background: none; border: none; cursor: pointer; color: #c0392b;
-    font-size: 18px; line-height: 1; padding: 0;
-  }
-  .btn-remover-aluno:hover { color: #922b21; }
-  .btn-add-aluno {
-    display: flex; align-items: center; gap: 6px;
-    background: none; border: 1.5px dashed #1a73e8; color: #1a73e8;
-    border-radius: 6px; padding: 8px 14px; font-size: 13px; font-weight: 600;
-    cursor: pointer; width: 100%; justify-content: center; margin-bottom: 16px;
-    transition: background 0.15s;
-  }
+  .alunos-label { font-size: 13px; color: #555; font-weight: 500; margin-bottom: 8px; display: block; }
+  .aluno-card { border: 1px solid #e0e0e0; border-radius: 8px; padding: 14px 14px 10px; margin-bottom: 10px; background: #fafafa; position: relative; }
+  .aluno-card .aluno-header { font-size: 12px; font-weight: 600; color: #1a73e8; margin-bottom: 10px; }
+  .btn-remover-aluno { position: absolute; top: 10px; right: 12px; background: none; border: none; cursor: pointer; color: #c0392b; font-size: 18px; line-height: 1; padding: 0; }
+  .btn-add-aluno { display: flex; align-items: center; gap: 6px; background: none; border: 1.5px dashed #1a73e8; color: #1a73e8; border-radius: 6px; padding: 8px 14px; font-size: 13px; font-weight: 600; cursor: pointer; width: 100%; justify-content: center; margin-bottom: 16px; transition: background 0.15s; }
   .btn-add-aluno:hover { background: #e8f0fe; }
-
-  /* ── Upload de foto (Reuniões) ── */
-  .upload-area {
-    border: 2px dashed #ccc; border-radius: 8px; padding: 24px 16px;
-    text-align: center; cursor: pointer; transition: all 0.2s;
-    background: #fafafa; position: relative;
-  }
-  .upload-area:hover, .upload-area.drag-over {
-    border-color: #1a73e8; background: #e8f0fe;
-  }
-  .upload-area input[type=file] {
-    position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
-  }
+  .upload-area { border: 2px dashed #ccc; border-radius: 8px; padding: 24px 16px; text-align: center; cursor: pointer; transition: all 0.2s; background: #fafafa; position: relative; }
+  .upload-area:hover, .upload-area.drag-over { border-color: #1a73e8; background: #e8f0fe; }
+  .upload-area input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
   .upload-area .upload-icon { font-size: 32px; margin-bottom: 6px; }
   .upload-area .upload-texto { font-size: 13px; color: #666; }
   .upload-area .upload-sub { font-size: 11px; color: #999; margin-top: 4px; }
   .fotos-preview { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-  .foto-thumb {
-    position: relative; width: 80px; height: 80px; border-radius: 6px;
-    overflow: hidden; border: 1px solid #ddd;
-  }
+  .foto-thumb { position: relative; width: 80px; height: 80px; border-radius: 6px; overflow: hidden; border: 1px solid #ddd; }
   .foto-thumb img { width: 100%; height: 100%; object-fit: cover; }
-  .foto-thumb .btn-del-foto {
-    position: absolute; top: 2px; right: 2px; background: rgba(0,0,0,0.6);
-    color: white; border: none; border-radius: 50%; width: 18px; height: 18px;
-    font-size: 11px; cursor: pointer; display: flex; align-items: center; justify-content: center;
-    line-height: 1;
-  }
+  .foto-thumb .btn-del-foto { position: absolute; top: 2px; right: 2px; background: rgba(0,0,0,0.6); color: white; border: none; border-radius: 50%; width: 18px; height: 18px; font-size: 11px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
   .upload-count { font-size: 12px; color: #1a73e8; margin-top: 6px; font-weight: 500; }
+  .progress-bar { width: 100%; background: #e0e0e0; border-radius: 6px; height: 8px; margin-top: 10px; display: none; }
+  .progress-bar-inner { height: 8px; background: #1a73e8; border-radius: 6px; transition: width 0.3s; }
+  .progress-texto { font-size: 12px; color: #1a73e8; margin-top: 4px; text-align: center; display: none; }
 </style>
 </head>
 <body>
-
 <div class="topo">
   <h1>EMEB Mario Martins de Almeida</h1>
   <p>Sistema de Registro Escolar</p>
 </div>
-
 <div class="menu">
   <button onclick="trocarAba('brigas')" id="btn-brigas">⚡ Brigas</button>
   <button onclick="trocarAba('busca')" id="btn-busca">🔍 Busca Ativa</button>
   <button onclick="trocarAba('reunioes')" id="btn-reunioes">👥 Reuniões</button>
   <button onclick="trocarAba('ocorrencias')" id="btn-ocorrencias">📋 Ocorrências</button>
 </div>
-
 <div class="container">
 
   <!-- BRIGAS -->
@@ -135,16 +82,11 @@
             <select id="b-turno"><option value="">Selecione</option><option>Manhã</option><option>Tarde</option><option>Integral</option></select>
           </div>
         </div>
-
-        <!-- Alunos dinâmicos -->
         <div class="campo">
           <span class="alunos-label">Alunos envolvidos <span style="color:#c0392b">*</span></span>
           <div id="lista-alunos"></div>
-          <button type="button" class="btn-add-aluno" onclick="adicionarAluno()">
-            + Adicionar aluno
-          </button>
+          <button type="button" class="btn-add-aluno" onclick="adicionarAluno()">+ Adicionar aluno</button>
         </div>
-
         <div class="campo"><label>Local da briga</label>
           <select id="b-local"><option value="">Selecione</option><option>Sala de aula</option><option>Pátio / Recreio</option><option>Corredor</option><option>Banheiro</option><option>Cantina</option><option>Portão / Entrada</option><option>Outro</option></select>
         </div>
@@ -219,18 +161,13 @@
         <div class="campo"><label>Tipo de reunião</label>
           <select id="r-tipo"><option value="">Selecione</option><option>Reunião de pais</option><option>Conselho de classe</option><option>Reunião pedagógica</option><option>Reunião com família de aluno</option><option>Formação de professores</option><option>Outro</option></select>
         </div>
-
-        <!-- Aluno da reunião -->
         <div class="linha-2">
           <div class="campo"><label>Nome do aluno (se aplicável)</label><input type="text" id="r-aluno" placeholder="Nome completo do aluno"></div>
           <div class="campo"><label>Turma / Série</label><input type="text" id="r-turma-aluno" placeholder="Ex: 4º A"></div>
         </div>
-
         <div class="campo"><label>Pauta / Assunto</label><textarea id="r-pauta" placeholder="Descreva os temas discutidos..."></textarea></div>
         <div class="campo"><label>Participantes</label><textarea id="r-participantes" placeholder="Liste os presentes..." style="min-height:60px;"></textarea></div>
         <div class="campo"><label>Encaminhamentos / Decisões</label><textarea id="r-encaminhamentos" placeholder="O que foi decidido ou encaminhado..."></textarea></div>
-
-        <!-- Upload de foto da ata assinada -->
         <div class="campo">
           <label>Foto do registro assinado pelos participantes</label>
           <div class="upload-area" id="upload-area-reuniao"
@@ -242,8 +179,9 @@
           </div>
           <div class="fotos-preview" id="preview-reuniao"></div>
           <div class="upload-count" id="count-reuniao"></div>
+          <div class="progress-bar" id="prog-bar"><div class="progress-bar-inner" id="prog-inner" style="width:0%"></div></div>
+          <div class="progress-texto" id="prog-texto"></div>
         </div>
-
         <div class="campo"><label>Responsável pelo registro</label><input type="text" id="r-responsavel" placeholder="Nome do professor ou funcionário"></div>
         <button class="btn-enviar" onclick="enviarReunioes()">Salvar registro</button>
       </div>
@@ -302,348 +240,95 @@
   </div>
 
 </div>
-
 <script>
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzJ75ieYmBLS6R2J03w2BoxB63aBreRlZzFLNvWD87YSAupJRduwHT4mQ0HGYFQFWQx/exec';
-
 const hoje = new Date().toISOString().split('T')[0];
-['b-data','ba-data','r-data','o-data'].forEach(id => {
-  const el = document.getElementById(id);
-  if (el) el.value = hoje;
-});
-
-// ── Estado dos alunos dinâmicos (Brigas) ──
+['b-data','ba-data','r-data','o-data'].forEach(id => { const el = document.getElementById(id); if (el) el.value = hoje; });
 let alunosBrigaCount = 0;
-
 function adicionarAluno() {
   alunosBrigaCount++;
   const idx = alunosBrigaCount;
   const lista = document.getElementById('lista-alunos');
   const card = document.createElement('div');
-  card.className = 'aluno-card';
-  card.id = 'aluno-card-' + idx;
-  card.innerHTML = `
-    <div class="aluno-header">Aluno ${idx}</div>
-    <button type="button" class="btn-remover-aluno" onclick="removerAluno(${idx})" title="Remover">✕</button>
-    <div class="linha-2">
-      <div class="campo" style="margin-bottom:0">
-        <label>Nome completo</label>
-        <input type="text" id="b-aluno-nome-${idx}" placeholder="Nome do aluno">
-      </div>
-      <div class="campo" style="margin-bottom:0">
-        <label>Turma</label>
-        <input type="text" id="b-aluno-turma-${idx}" placeholder="Ex: 5º A">
-      </div>
-    </div>
-  `;
-  lista.appendChild(card);
-  atualizarNumeracaoAlunos();
+  card.className = 'aluno-card'; card.id = 'aluno-card-' + idx;
+  card.innerHTML = `<div class="aluno-header">Aluno ${idx}</div><button type="button" class="btn-remover-aluno" onclick="removerAluno(${idx})">✕</button><div class="linha-2"><div class="campo" style="margin-bottom:0"><label>Nome completo</label><input type="text" id="b-aluno-nome-${idx}" placeholder="Nome do aluno"></div><div class="campo" style="margin-bottom:0"><label>Turma</label><input type="text" id="b-aluno-turma-${idx}" placeholder="Ex: 5º A"></div></div>`;
+  lista.appendChild(card); atualizarNumeracaoAlunos();
 }
-
-function removerAluno(idx) {
-  const card = document.getElementById('aluno-card-' + idx);
-  if (card) card.remove();
-  atualizarNumeracaoAlunos();
-}
-
-function atualizarNumeracaoAlunos() {
-  const cards = document.querySelectorAll('#lista-alunos .aluno-card');
-  cards.forEach((c, i) => {
-    const header = c.querySelector('.aluno-header');
-    if (header) header.textContent = 'Aluno ' + (i + 1);
-  });
-}
-
-function coletarAlunosBriga() {
-  const cards = document.querySelectorAll('#lista-alunos .aluno-card');
-  const alunos = [];
-  cards.forEach(card => {
-    const idCard = card.id.replace('aluno-card-', '');
-    const nome = document.getElementById('b-aluno-nome-' + idCard)?.value.trim() || '';
-    const turma = document.getElementById('b-aluno-turma-' + idCard)?.value.trim() || '';
-    alunos.push({ nome, turma });
-  });
-  return alunos;
-}
-
-// ── Fotos (Reuniões) ──
+function removerAluno(idx) { const card = document.getElementById('aluno-card-' + idx); if (card) card.remove(); atualizarNumeracaoAlunos(); }
+function atualizarNumeracaoAlunos() { document.querySelectorAll('#lista-alunos .aluno-card').forEach((c, i) => { const h = c.querySelector('.aluno-header'); if (h) h.textContent = 'Aluno ' + (i + 1); }); }
+function coletarAlunosBriga() { const cards = document.querySelectorAll('#lista-alunos .aluno-card'); const alunos = []; cards.forEach(card => { const id = card.id.replace('aluno-card-', ''); alunos.push({ nome: document.getElementById('b-aluno-nome-' + id)?.value.trim() || '', turma: document.getElementById('b-aluno-turma-' + id)?.value.trim() || '' }); }); return alunos; }
 let fotosReuniaoBase64 = [];
-
 function processarFotos(input, chave) {
-
-  const files = Array.from(input.files);
-
-  const MAX = 5;
-
-  files.forEach(file => {
-
-    if (fotosReuniaoBase64.length >= MAX) {
-      return;
-    }
-
+  Array.from(input.files).forEach(file => {
+    if (fotosReuniaoBase64.length >= 5) return;
     const reader = new FileReader();
-
-    reader.onload = function(e) {
-
-      const img = new Image();
-
-      img.onload = function() {
-
-        const canvas =
-          document.createElement('canvas');
-
-        const MAX_WIDTH = 500;
-
-        let width = img.width;
-        let height = img.height;
-
-        if (width > MAX_WIDTH) {
-
-          height =
-            height * (MAX_WIDTH / width);
-
-          width = MAX_WIDTH;
-        }
-
-        canvas.width = width;
-        canvas.height = height;
-
-        const ctx =
-          canvas.getContext('2d');
-
-        ctx.drawImage(
-          img,
-          0,
-          0,
-          width,
-          height
-        );
-
-        const compressedBase64 =
-          canvas.toDataURL(
-            'image/jpeg',
-            0.3
-          );
-
-        fotosReuniaoBase64.push({
-          nome: file.name,
-          base64: compressedBase64
-        });
-
-        renderizarPreview();
-      };
-
-      img.src = e.target.result;
-    };
-
+    reader.onload = e => { const img = new Image(); img.onload = () => { const canvas = document.createElement('canvas'); const MAX = 800; let w = img.width, h = img.height; if (w > MAX) { h = h*(MAX/w); w = MAX; } canvas.width = w; canvas.height = h; canvas.getContext('2d').drawImage(img,0,0,w,h); fotosReuniaoBase64.push({ nome: file.name, base64: canvas.toDataURL('image/jpeg',0.5) }); renderizarPreview(); }; img.src = e.target.result; };
     reader.readAsDataURL(file);
-  });
-
-  input.value = '';
+  }); input.value = '';
 }
- 
 function renderizarPreview() {
-  const container = document.getElementById('preview-reuniao');
-  const count = document.getElementById('count-reuniao');
-  container.innerHTML = '';
-  fotosReuniaoBase64.forEach((foto, i) => {
-    const thumb = document.createElement('div');
-    thumb.className = 'foto-thumb';
-    thumb.innerHTML = `
-      <img src="${foto.base64}" alt="Foto ${i+1}">
-      <button class="btn-del-foto" onclick="removerFoto(${i})">✕</button>
-    `;
-    container.appendChild(thumb);
-  });
-  count.textContent = fotosReuniaoBase64.length > 0
-    ? `${fotosReuniaoBase64.length} foto(s) anexada(s)`
-    : '';
+  const c = document.getElementById('preview-reuniao'); c.innerHTML = '';
+  fotosReuniaoBase64.forEach((f,i) => { const t = document.createElement('div'); t.className='foto-thumb'; t.innerHTML=`<img src="${f.base64}"><button class="btn-del-foto" onclick="removerFoto(${i})">✕</button>`; c.appendChild(t); });
+  document.getElementById('count-reuniao').textContent = fotosReuniaoBase64.length > 0 ? fotosReuniaoBase64.length + ' foto(s) anexada(s)' : '';
 }
-
-function removerFoto(idx) {
-  fotosReuniaoBase64.splice(idx, 1);
-  renderizarPreview();
-}
-
-function dragOver(e, chave) {
-  e.preventDefault();
-  document.getElementById('upload-area-' + chave).classList.add('drag-over');
-}
-function dragLeave(chave) {
-  document.getElementById('upload-area-' + chave).classList.remove('drag-over');
-}
-function dropFoto(e, chave) {
-  e.preventDefault();
-  dragLeave(chave);
-  const fakeInput = { files: e.dataTransfer.files, value: '' };
-  processarFotos(fakeInput, chave);
-}
-
-// ── Envio específico Brigas ──
-function enviarBrigas() {
-  const responsavel = v('b-responsavel');
-  if (!responsavel) {
-    alert('Preencha o campo Responsável pelo registro.');
-    document.getElementById('b-responsavel').focus();
-    return;
-  }
-  const alunos = coletarAlunosBriga();
-  if (alunos.length === 0) {
-    alert('Adicione ao menos um aluno envolvido na briga.');
-    return;
-  }
-  const semNome = alunos.find(a => !a.nome);
-  if (semNome) {
-    alert('Preencha o nome de todos os alunos adicionados.');
-    return;
-  }
-
-  const dados = {
-    aba: 'Brigas',
-    data: v('b-data'), hora: v('b-hora'), turno: v('b-turno'),
-    alunos: alunos,
-    local: v('b-local'), descricao: v('b-descricao'),
-    pais_comunicados: v('b-pais'), encaminhamento: v('b-encaminhamento'),
-    responsavel
-  };
-
-  const btn = document.querySelector('#aba-brigas .btn-enviar');
-  btn.disabled = true; btn.textContent = 'Salvando...';
-
-  fetch(SCRIPT_URL, {
-    method: 'POST', mode: 'no-cors',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(dados)
-  })
-  .then(() => {
-    const protocolo = 'OC-' + Date.now().toString().slice(-6);
-    const nomes = alunos.map(a => a.nome).filter(Boolean).join(', ');
-    document.getElementById('info-brigas').textContent = nomes;
-    document.getElementById('prot-brigas').textContent = 'Protocolo: ' + protocolo;
-    document.getElementById('form-brigas').style.display = 'none';
-    document.getElementById('suc-brigas').style.display = 'block';
-  })
-  .catch(() => {
-    alert('Erro ao salvar. Verifique sua conexão e tente novamente.');
-    btn.disabled = false; btn.textContent = 'Salvar registro';
-  });
-}
-
-// ── Envio específico Reuniões ──
-function enviarReunioes() {
-  const tipo = v('r-tipo');
-  const responsavel = v('r-responsavel');
+function removerFoto(idx) { fotosReuniaoBase64.splice(idx,1); renderizarPreview(); }
+function dragOver(e,c) { e.preventDefault(); document.getElementById('upload-area-'+c).classList.add('drag-over'); }
+function dragLeave(c) { document.getElementById('upload-area-'+c).classList.remove('drag-over'); }
+function dropFoto(e,c) { e.preventDefault(); dragLeave(c); processarFotos({files:e.dataTransfer.files,value:''},c); }
+async function enviarReunioes() {
+  const tipo = v('r-tipo'), responsavel = v('r-responsavel');
   if (!tipo) { alert('Selecione o tipo de reunião.'); return; }
-  if (!responsavel) {
-    alert('Preencha o campo Responsável pelo registro.');
-    document.getElementById('r-responsavel').focus();
-    return;
-  }
-
-  const dados = {
-    aba: 'Reunioes',
-    data: v('r-data'), horario_inicio: v('r-inicio'), horario_fim: v('r-fim'),
-    tipo, aluno: v('r-aluno'), turma_aluno: v('r-turma-aluno'),
-    pauta: v('r-pauta'), participantes: v('r-participantes'),
-    encaminhamentos: v('r-encaminhamentos'),
-    fotos_count: fotosReuniaoBase64.length,
-    fotos: [],
-    responsavel
-  };
-
+  if (!responsavel) { alert('Preencha o Responsável.'); document.getElementById('r-responsavel').focus(); return; }
   const btn = document.querySelector('#aba-reunioes .btn-enviar');
   btn.disabled = true; btn.textContent = 'Salvando...';
-
-  fetch(SCRIPT_URL, {
-    method: 'POST', mode: 'no-cors',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(dados)
-  })
-  .then(() => {
-    const protocolo = 'OC-' + Date.now().toString().slice(-6);
+  const progBar = document.getElementById('prog-bar'), progInner = document.getElementById('prog-inner'), progTexto = document.getElementById('prog-texto');
+  const total = 1 + fotosReuniaoBase64.length; let step = 0;
+  function prog(msg) { step++; const p = Math.round((step/total)*100); progBar.style.display='block'; progTexto.style.display='block'; progInner.style.width=p+'%'; progTexto.textContent=msg; }
+  try {
+    prog('Salvando registro...');
+    await fetch(SCRIPT_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ aba:'Reunioes', data:v('r-data'), horario_inicio:v('r-inicio'), horario_fim:v('r-fim'), tipo, aluno:v('r-aluno'), turma_aluno:v('r-turma-aluno'), pauta:v('r-pauta'), participantes:v('r-participantes'), encaminhamentos:v('r-encaminhamentos'), fotos:[], responsavel }) });
+    for (let i = 0; i < fotosReuniaoBase64.length; i++) {
+      prog('Enviando foto ' + (i+1) + ' de ' + fotosReuniaoBase64.length + '...');
+      await fetch(SCRIPT_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ aba:'FotosReunioes', data:v('r-data'), tipo, responsavel, fotos:[fotosReuniaoBase64[i]] }) });
+    }
     document.getElementById('info-reunioes').textContent = tipo;
-    document.getElementById('prot-reunioes').textContent = 'Protocolo: ' + protocolo;
+    document.getElementById('prot-reunioes').textContent = 'Protocolo: OC-' + Date.now().toString().slice(-6);
     document.getElementById('form-reunioes').style.display = 'none';
     document.getElementById('suc-reunioes').style.display = 'block';
-  })
-  .catch(() => {
-    alert('Erro ao salvar. Verifique sua conexão e tente novamente.');
-    btn.disabled = false; btn.textContent = 'Salvar registro';
-  });
+  } catch(err) { alert('Erro ao salvar.'); btn.disabled=false; btn.textContent='Salvar registro'; progBar.style.display='none'; progTexto.style.display='none'; }
 }
-
-// ── Genérico ──
-function v(id) {
-  const el = document.getElementById(id);
-  return el ? el.value : '';
+function enviarBrigas() {
+  const responsavel = v('b-responsavel');
+  if (!responsavel) { alert('Preencha o Responsável.'); return; }
+  const alunos = coletarAlunosBriga();
+  if (!alunos.length) { alert('Adicione ao menos um aluno.'); return; }
+  if (alunos.find(a => !a.nome)) { alert('Preencha o nome de todos os alunos.'); return; }
+  const btn = document.querySelector('#aba-brigas .btn-enviar'); btn.disabled=true; btn.textContent='Salvando...';
+  fetch(SCRIPT_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ aba:'Brigas', data:v('b-data'), hora:v('b-hora'), turno:v('b-turno'), alunos, local:v('b-local'), descricao:v('b-descricao'), pais_comunicados:v('b-pais'), encaminhamento:v('b-encaminhamento'), responsavel }) })
+  .then(() => { document.getElementById('info-brigas').textContent = alunos.map(a=>a.nome).join(', '); document.getElementById('prot-brigas').textContent = 'Protocolo: OC-'+Date.now().toString().slice(-6); document.getElementById('form-brigas').style.display='none'; document.getElementById('suc-brigas').style.display='block'; })
+  .catch(() => { alert('Erro ao salvar.'); btn.disabled=false; btn.textContent='Salvar registro'; });
 }
-
-function trocarAba(aba) {
-  ['brigas','busca','reunioes','ocorrencias'].forEach(a => {
-    document.getElementById('aba-' + a).classList.remove('visivel');
-    document.getElementById('btn-' + a).classList.remove('ativo');
-  });
-  document.getElementById('aba-' + aba).classList.add('visivel');
-  document.getElementById('btn-' + aba).classList.add('ativo');
-}
-
+function v(id) { const el = document.getElementById(id); return el ? el.value : ''; }
+function trocarAba(aba) { ['brigas','busca','reunioes','ocorrencias'].forEach(a => { document.getElementById('aba-'+a).classList.remove('visivel'); document.getElementById('btn-'+a).classList.remove('ativo'); }); document.getElementById('aba-'+aba).classList.add('visivel'); document.getElementById('btn-'+aba).classList.add('ativo'); }
 function enviar(id, dados, obrigatorios) {
-  for (const campo of obrigatorios) {
-    if (!v(campo)) {
-      alert('Preencha todos os campos obrigatórios antes de salvar.');
-      document.getElementById(campo).focus();
-      return;
-    }
-  }
-  const abas = { Brigas: 'brigas', BuscaAtiva: 'busca', Reunioes: 'reunioes', Ocorrencias: 'ocorrencias' };
+  for (const campo of obrigatorios) { if (!v(campo)) { alert('Preencha todos os campos obrigatórios.'); document.getElementById(campo).focus(); return; } }
+  const abas = { Brigas:'brigas', BuscaAtiva:'busca', Reunioes:'reunioes', Ocorrencias:'ocorrencias' };
   const slug = abas[id] || id.toLowerCase();
-  const btn = document.querySelector('#aba-' + slug + ' .btn-enviar');
-  if (btn) { btn.disabled = true; btn.textContent = 'Salvando...'; }
-
-  fetch(SCRIPT_URL, {
-    method: 'POST', mode: 'no-cors',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(dados)
-  })
-  .then(() => {
-    const protocolo = 'OC-' + Date.now().toString().slice(-6);
-    const nomeAluno = dados.aluno || dados.aluno1 || dados.tipo || '';
-    document.getElementById('info-' + slug).textContent = nomeAluno;
-    document.getElementById('prot-' + slug).textContent = 'Protocolo: ' + protocolo;
-    document.getElementById('form-' + slug).style.display = 'none';
-    document.getElementById('suc-' + slug).style.display = 'block';
-  })
-  .catch(() => {
-    alert('Erro ao salvar. Verifique sua conexão e tente novamente.');
-    if (btn) { btn.disabled = false; btn.textContent = 'Salvar registro'; }
-  });
+  const btn = document.querySelector('#aba-'+slug+' .btn-enviar'); if (btn) { btn.disabled=true; btn.textContent='Salvando...'; }
+  fetch(SCRIPT_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body: JSON.stringify(dados) })
+  .then(() => { document.getElementById('info-'+slug).textContent = dados.aluno||dados.tipo||''; document.getElementById('prot-'+slug).textContent = 'Protocolo: OC-'+Date.now().toString().slice(-6); document.getElementById('form-'+slug).style.display='none'; document.getElementById('suc-'+slug).style.display='block'; })
+  .catch(() => { alert('Erro ao salvar.'); if (btn) { btn.disabled=false; btn.textContent='Salvar registro'; } });
 }
-
 function novoRegistro(aba) {
-  document.getElementById('form-' + aba).style.display = 'block';
-  document.getElementById('suc-' + aba).style.display = 'none';
-  document.querySelectorAll('#aba-' + aba + ' input[type=text], #aba-' + aba + ' textarea, #aba-' + aba + ' input[type=number]').forEach(el => el.value = '');
-  document.querySelectorAll('#aba-' + aba + ' select').forEach(el => el.value = '');
-  document.querySelectorAll('#aba-' + aba + ' input[type=date]').forEach(el => el.value = hoje);
-  const btn = document.querySelector('#aba-' + aba + ' .btn-enviar');
-  if (btn) { btn.disabled = false; btn.textContent = 'Salvar registro'; }
-
-  // Reset alunos briga
-  if (aba === 'brigas') {
-    document.getElementById('lista-alunos').innerHTML = '';
-    alunosBrigaCount = 0;
-  }
-  // Reset fotos reunião
-  if (aba === 'reunioes') {
-    fotosReuniaoBase64 = [];
-    renderizarPreview();
-  }
+  document.getElementById('form-'+aba).style.display='block'; document.getElementById('suc-'+aba).style.display='none';
+  document.querySelectorAll('#aba-'+aba+' input[type=text], #aba-'+aba+' textarea, #aba-'+aba+' input[type=number]').forEach(el=>el.value='');
+  document.querySelectorAll('#aba-'+aba+' select').forEach(el=>el.value='');
+  document.querySelectorAll('#aba-'+aba+' input[type=date]').forEach(el=>el.value=hoje);
+  const btn = document.querySelector('#aba-'+aba+' .btn-enviar'); if (btn) { btn.disabled=false; btn.textContent='Salvar registro'; }
+  if (aba==='brigas') { document.getElementById('lista-alunos').innerHTML=''; alunosBrigaCount=0; }
+  if (aba==='reunioes') { fotosReuniaoBase64=[]; renderizarPreview(); document.getElementById('prog-bar').style.display='none'; document.getElementById('prog-texto').style.display='none'; }
 }
-
-// Inicializa com 2 alunos padrão na aba brigas
-trocarAba('ocorrencias');
-adicionarAluno();
-adicionarAluno();
+trocarAba('ocorrencias'); adicionarAluno(); adicionarAluno();
 </script>
 </body>
 </html>
