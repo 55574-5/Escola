@@ -547,7 +547,7 @@ function enviarReunioes() {
     pauta: v('r-pauta'), participantes: v('r-participantes'),
     encaminhamentos: v('r-encaminhamentos'),
     fotos_count: fotosReuniaoBase64.length,
-    fotos: fotosReuniaoBase64.map(f => ({ nome: f.nome, base64: f.base64 })),
+    fotos: fotosReuniaoBase64,
     responsavel
   };
 
